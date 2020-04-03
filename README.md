@@ -1,6 +1,6 @@
 #  Launching SCDF in local mode using docker-compose: 
 ## Overivew of Pipeline
-![Pipeline & Binders](file:///Users/wlund/Dropbox/git-workspace/wxlund/nvenergy/reqres-files/rabbit-kafka-binder.png)
+![Pipeline & Binders](https://github.com/wlund-pivotal/reqres-files/blob/master/rabbit-kafka-binder.png)
 
 See [Local Machine: Docker Compose](https://dataflow.spring.io/docs/installation/local/docker/) for details on starting scdf with docker-compose. For this example we've been
 using
