@@ -1,8 +1,10 @@
 #  Launching SCDF in local mode using docker-compose: 
-## Overivew of Pipeline
+## Overivew of ReqRes Pipeline
 ![Pipeline & Binders](https://github.com/wlund-pivotal/reqres-files/blob/master/rabbit-kafka-binder.png)
+There are times when an asynchronous data pipeline needs to act as if its synchronous.  In this use case we leverage a configuation that allows the client to wait on the pipeline to finish the processing and return the response as if it were a standard http request/response scenario. It still runs on the asynchronous architecture of the message bus leveraging SCDF's binders.
 
-See [Local Machine: Docker Compose](https://dataflow.spring.io/docs/installation/local/docker/) for details on starting scdf with docker-compose. For this example we've been
+
+There are two ways to work with SCDF in local mode; 1) launch the app-starters as individual spring boot apps and 2) run a local scdf docker-compose.yml env. We will focus on the latter because we believe its simpler and its well documented in the SCDF docs. For that see [Local Machine: Docker Compose](https://dataflow.spring.io/docs/installation/local/docker/) for details on starting scdf with docker-compose. For this example we've been
 using
 ```bash
 DATAFLOW_VERSION=2.4.2.RELEASE SKIPPER_VERSION=2.3.2.RELEASE docker-compose -f ./docker-compose.yml -f ./docker-compose-rabbitmq.yml -f ./docker-compose-postgres.yml up
@@ -10,14 +12,14 @@ DATAFLOW_VERSION=2.4.2.RELEASE SKIPPER_VERSION=2.3.2.RELEASE docker-compose -f .
 
 One of the options we discussed, as the main theme in existing use cases of IBM data-power services involve patterns of integration and transformation tasks, we can leverage Spring Cloud Stream technique to perform typical tasks. Spring Cloud Stream provides a light-weight programming model to construct a stream of messages that is composed of a starting source, through one or more processors and a final sink. Each of the source, processor and sink parts are essentially a simple Spring Boot-based application with a qualifying binding annotation and few properties. Furthermore, with the Spring Cloud Data Flow and Spring Cloud Skipper it would be super-easy to orchestrate and manage the creation, deployment, scaling and versioning of the streams and their applications.
 
-Our brainstormed idea is to use a request / response model of a stream that starts with an HTTP source and goes through one/more processor(s). No sink stream application is needed, but rather the final message returns back as a response. An integration gateway adapter is used in the HTTP source application to model a request/response pattern. The picture below worths a 1000 word to illustrate the stream.
+Our brainstormed idea is to use a request / response model of a stream that starts with an HTTP source and goes through one/more processor(s). No sink stream application is needed, but rather the final message returns back as a response. An integration gateway adapter is used in the HTTP source application to model a request/response pattern. The picture above is worth a 1000 word to illustrate the stream.
 
 We have completed the POC we started together about this model where a request/reply invocation from the dataflow server replying on the bus for support waits for the response from the backend before returning. The HTTP source has an endpoint that takes a request in same format as the existing XML payload. The DB query parameters are extracted out of the request payload using a Groovy transformer. Another transformer receives these parameters, reads the query string from its configuration properties (config server could be used here), executes the query and passes through the result in XML. If needed, a processor could be created to further transform the query result into another XML format per the response requirement.
 
 The code is in Github. You can follow the steps below to run the POC locally. Same applications could be prepared further to be registered and used with SCDF / Skipper.
 
-HTTP Source application
-——————————-
+## HTTP Source application**
+
 
 Clone this application from https://github.com/Haybu/reqresp-http-source-rabbit. Go to the project home directory, and do
 
