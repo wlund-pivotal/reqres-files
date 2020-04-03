@@ -18,7 +18,7 @@ We have completed the POC we started together about this model where a request/r
 
 The code is in Github. You can follow the steps below to run the POC locally. Same applications could be prepared further to be registered and used with SCDF / Skipper.
 
-## HTTP Source application**
+## HTTP Source application
 
 
 Clone this application from https://github.com/Haybu/reqresp-http-source-rabbit. Go to the project home directory, and do
@@ -38,8 +38,8 @@ docker exec -it dataflow-rabbitmq /bin/sh
 ```
 Now you can watch the message flow through the pipeline's use of your chosen binder  with localhost:15672  (guest/guest)
 
-Groovy Transformer
-———————---
+## Groovy Transformer
+
 
 Download OOB groovy-transform-processor-rabbit-2.0.1.RELEASE.jar file (I can send it to you if you need). Save the attached groovy script somewhere in your system, and in a different cmd window run the following
 
@@ -70,8 +70,8 @@ Once the stream is deployed We can test the groovy processor with the following 
 
 It will not return yet because our message bus is configured for request/reply. 
 
-JDBC Processor application
-———————————
+## JDBC sink app-starter
+
 
 Clone this application from https://github.com/Haybu/reqres-jdbc-processor-rabbit. Go to the project home directory, and in a different cmd window do
 (Note: need to check it back in again. )
@@ -79,7 +79,7 @@ Clone this application from https://github.com/Haybu/reqres-jdbc-processor-rabbi
 $ mvn clean install
 $ java -jar ./target/reqres-jdbc-processor-rabbit-0.0.1-SNAPSHOT.jar
 
-Postgres:
+**Postgres:**
 ```bash
 // I could not get the pull from maven to work without doing this local install 
 mvn install:install-file -Dfile=/Users/wlund/Downloads/postgresql-42.2.10.jar -DgroupId=org.postgresql -DartifactId=postgresql -Dversion=42.2.5 -Dpackaging=jar
@@ -106,7 +106,7 @@ stream create --name http-reqres-jdbc --definition "http-reqres --server.port=20
 stream deploy http-reqres-jdbc
 ```
 
-* Optional *
+*Optional*
 If you want to try using the oracle script here is the Oracle Path:
 
 I have used an Oracle docker image to run the DB locally in my system. I also mimc’ed creating a PL/SQL function to retrieve a customers table so I can run the same query string with the passed parameters. I have the JDBC application pointed to the Oracle DB instance that David provided me. (Note: that image was pulled down so I used the updated version)
