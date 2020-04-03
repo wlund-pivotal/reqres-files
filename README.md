@@ -25,7 +25,7 @@ $ java -jar ./target/reqres-http-source-rabbit-0.0.1-SNAPSHOT.jar
 If you are running docker-compose with rabbit you can register the app in the following manner:
 
 ```bash
-dataflow:>app register --name http-nve --type source --uri maven://com.agilehandy:reqresp-http-source-rabbit:0.0.1-SNAPSHOT
+dataflow:>app register --name http-reqres --type source --uri maven://com.agilehandy:reqresp-http-source-rabbit:0.0.1-SNAPSHOT
 ```
 To enable this we use the local customization option we use the maven section for mounting volumes for the docker-compose configuration found at "Maven Local Repository Mounting" - https://dataflow.spring.io/docs/installation/local/docker-customize/. In addition, when using rabbit we expose the management port (15672) so that developers can have a view into the auto-created queues and monitor pipeline traffic. Add the following in the docker-compose-rabbitmq.yml.  Finally, we exec into the dataflow-rabbitmq container and enable the rabbitmq management plugin with the following.
 ```bash
@@ -54,7 +54,7 @@ docker cp xml-request-transform.groovy dataflow-server:/root
 Now we add the groovy-transform-processor to our pipeline with the following syntax:
 
 ```dataflow-shell
-stream create --name http-reqresp-log --definition "http-nve --server.port=20001 | groovy-transform --script=file:///root/xml-request-transform.groovy | log"
+stream create --name http-reqresp-log --definition "http-reqres --server.port=20001 | groovy-transform --script=file:///root/xml-request-transform.groovy | log"
 stream deploy http-reqresp-log
 ```
 
@@ -79,7 +79,7 @@ Postgres:
 ```bash
 // I could not get the pull from maven to work without doing this local install 
 mvn install:install-file -Dfile=/Users/wlund/Downloads/postgresql-42.2.10.jar -DgroupId=org.postgresql -DartifactId=postgresql -Dversion=42.2.5 -Dpackaging=jar
-app register --name jdbc-nve --type sink --uri maven://com.agilehandy:/reqres-jdbc-processor-rabbit:0.0.1-SNAPSHOT
+app register --name jdbc-reqres --type sink --uri maven://com.agilehandy:/reqres-jdbc-processor-rabbit:0.0.1-SNAPSHOT
 Run the postgres container with the following:
 ```bash
 docker run --name postgres -p 5432:5432 -e POSTGRES_PASSWORD=postgres -d postgres
@@ -98,7 +98,7 @@ PGPASSWORD=postgres pgcli -U postgres -h localhost -d reqres
 Note: I was unable to run the script in DbVisualizer because of this error that I didn't take the time to resolve [Dollar-Quoted Postgres pl/pgsql procedures abort at first semi-colon] [https://support.dbvis.com/support/discussions/topics/1000076926]
 
 ```dataflow-shell
-stream create --name http-reqres-jdbc --definition "http-nve --server.port=20001 | groovy-transform --script=file:///root/xml-request-transform.groovy | jdbc-nve"
+stream create --name http-reqres-jdbc --definition "http-reqres --server.port=20001 | groovy-transform --script=file:///root/xml-request-transform.groovy | jdbc-reqres"
 stream deploy http-reqres-jdbc
 ```
 

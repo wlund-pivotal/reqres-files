@@ -1,0 +1,23 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:eser="http://www.nvenergy.com/eservices">
+  <soapenv:Header>
+    <wsse:Security soapenv:mustUnderstand="1" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+      <wsse:UsernameToken wsu:Id="UsernameToken-1" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+      <wsse:Username>SEIF_Eservices</wsse:Username>
+      <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">Zsh7jQiXIMHM</wsse:Password>
+      <wsse:Nonce EncodingType="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-soap-message-security-1.0#Base64Binary">Ib2ItPQx9GLDUdIWwhoeZw==</wsse:Nonce>
+         <wsu:Created>2012-08-31T15:22:48.031Z</wsu:Created>
+     </wsse:UsernameToken>
+     </wsse:Security>
+     </soapenv:Header>
+     <soapenv:Body>
+       <eser:checkUserExists>
+        <checkUserExistsRequest>
+          <standardRequest>
+            <requestSource>MOB</requestSource>
+            <companyCode>30</companyCode>
+          </standardRequest>
+          <customerUserID>JSD11538</customerUserID>
+        </checkUserExistsRequest>
+       </eser:checkUserExists>
+     </soapenv:Body>
+</soapenv:Envelope>
