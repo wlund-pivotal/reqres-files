@@ -7,7 +7,7 @@ There are times when an asynchronous data pipeline needs to act as if its synchr
 There are two ways to work with SCDF in local mode; 1) launch the app-starters as individual spring boot apps, which requires manually launching the message bus like RabbitMQ in these examples or 2) run a local scdf docker-compose.yml env. We will focus on the latter because we believe its simpler and its well documented in the SCDF docs. For that see [Local Machine: Docker Compose](https://dataflow.spring.io/docs/installation/local/docker/) for details on starting scdf with docker-compose. For this example we've been
 using
 ```bash
-DATAFLOW_VERSION=2.4.2.RELEASE SKIPPER_VERSION=2.3.2.RELEASE docker-compose -f ./docker-compose.yml -f ./docker-compose-rabbitmq.yml -f ./docker-compose-postgres.yml up
+HOST_MOUNT_PATH=~/.m2/repository/ DOCKER_MOUNT_PATH=/root/.m2/repository DATAFLOW_VERSION=2.4.2.RELEASE SKIPPER_VERSION=2.3.2.RELEASE docker-compose -f ./docker-compose.yml -f ./docker-compose-rabbitmq.yml -f ./docker-compose-postgres.yml up
 ```
 
 One of the options we discussed, as the main theme in existing use cases of IBM data-power services involve patterns of integration and transformation tasks, we can leverage Spring Cloud Stream technique to perform typical tasks. Spring Cloud Stream provides a light-weight programming model to construct a stream of messages that is composed of a starting source, through one or more processors and a final sink. Each of the source, processor and sink parts are essentially a simple Spring Boot-based application with a qualifying binding annotation and few properties. Furthermore, with the Spring Cloud Data Flow and Spring Cloud Skipper it would be super-easy to orchestrate and manage the creation, deployment, scaling and versioning of the streams and their applications.
@@ -54,11 +54,11 @@ Note: You need to copy the groovy script to the root directory in the following 
 ```bash
 docker cp xml-request-transform.groovy dataflow-server:/root
 ```
+I've needed a workaround for the artifacts as they evidently were not copied to the springRepo.  Do the following:
 
 ```bash
-I've needed a workaround for the artifacts as they evidently were not copied to the springRepo.  Do the following:
-docker cp <project-location>reqres-http-source-rabbit/target/reqres-http-source-rabbit-0.0.1-SNAPSHOT.jar dataflow-server:/root dataflow-server:/root
-docker cp <project-location>reqres-jdbc-processor-rabbit/target/reqres-jdbc-processor-rabbit-0.0.1-SNAPSHOT.jar  dataflow-server:/root dataflow-server:/root
+docker cp <project-location>reqres-http-source-rabbit/target/reqres-http-source-rabbit-0.0.1-SNAPSHOT.jar dataflow-server:/root
+docker cp <project-location>reqres-jdbc-processor-rabbit/target/reqres-jdbc-processor-rabbit-0.0.1-SNAPSHOT.jar  dataflow-server:/root 
 ```
 
 Now we add the groovy-transform-processor to our pipeline with the following syntax:
@@ -99,11 +99,10 @@ and the shell to execute the script with the following:
 [Note: workaround that uses postgres as provisioned by docker-compose above. ]
 ```bash
 PGPASSWORD=rootpw pgcli -U root -h localhost -d dataflow
+root@localhost:dataflow>use reqres;
 ```
 
-```bash
-PGPASSWORD=postgres pgcli -U postgres -h localhost -d reqres
-```
+copy the contents of db-script-postgres.sql and execute in the pgcli shell to create the data needed for the next stream. 
 
 Note: I was unable to run the script in DbVisualizer because of this error that I didn't take the time to resolve [Dollar-Quoted Postgres pl/pgsql procedures abort at first semi-colon] [https://support.dbvis.com/support/discussions/topics/1000076926]
 
