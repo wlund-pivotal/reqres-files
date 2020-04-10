@@ -55,6 +55,12 @@ Note: You need to copy the groovy script to the root directory in the following 
 docker cp xml-request-transform.groovy dataflow-server:/root
 ```
 
+```bash
+I've needed a workaround for the artifacts as they evidently were not copied to the springRepo.  Do the following:
+docker cp <project-location>reqres-http-source-rabbit/target/reqres-http-source-rabbit-0.0.1-SNAPSHOT.jar dataflow-server:/root dataflow-server:/root
+docker cp <project-location>reqres-jdbc-processor-rabbit/target/reqres-jdbc-processor-rabbit-0.0.1-SNAPSHOT.jar  dataflow-server:/root dataflow-server:/root
+```
+
 Now we add the groovy-transform-processor to our pipeline with the following syntax:
 
 ```dataflow-shell
