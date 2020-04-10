@@ -58,7 +58,7 @@ docker cp xml-request-transform.groovy dataflow-server:/root
 Now we add the groovy-transform-processor to our pipeline with the following syntax:
 
 ```dataflow-shell
-stream create --name http-reqresp-log --definition "http-reqres --server.port=20001 | groovy-transform --script=file:///root/xml-request-transform.groovy | log"
+stream create --name http-reqres-log --definition "http-reqres --server.port=20001 | groovy-transform --script=file:///root/xml-request-transform.groovy | log"
 stream deploy http-reqresp-log
 ```
 
