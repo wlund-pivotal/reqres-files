@@ -1,10 +1,10 @@
 #  Launching SCDF in local mode using docker-compose: 
-## Overivew of ReqRes Pipeline
+## Overview of ReqRes Pipeline
 ![Pipeline & Binders](https://github.com/wlund-pivotal/reqres-files/blob/master/rabbit-kafka-binder.png)
-There are times when an asynchronous data pipeline needs to act as if its synchronous.  In this use case we leverage a configuation that allows the client to wait on the pipeline to finish the processing and return the response as if it were a standard http request/response scenario. It still runs on the asynchronous architecture of the message bus leveraging SCDF's binders.
+There are times when an asynchronous data pipeline needs to act as if its synchronous.  In this use case we leverage a configuration that allows the client to wait on the pipeline to finish the processing and return the response as if it were a standard http request/response scenario. It still runs on the asynchronous architecture of the message bus leveraging SCDF's binders.
 
 
-There are two ways to work with SCDF in local mode; 1) launch the app-starters as individual spring boot apps and 2) run a local scdf docker-compose.yml env. We will focus on the latter because we believe its simpler and its well documented in the SCDF docs. For that see [Local Machine: Docker Compose](https://dataflow.spring.io/docs/installation/local/docker/) for details on starting scdf with docker-compose. For this example we've been
+There are two ways to work with SCDF in local mode; 1) launch the app-starters as individual spring boot apps, which requires manually launching the message bus like RabbitMQ in these examples or 2) run a local scdf docker-compose.yml env. We will focus on the latter because we believe its simpler and its well documented in the SCDF docs. For that see [Local Machine: Docker Compose](https://dataflow.spring.io/docs/installation/local/docker/) for details on starting scdf with docker-compose. For this example we've been
 using
 ```bash
 DATAFLOW_VERSION=2.4.2.RELEASE SKIPPER_VERSION=2.3.2.RELEASE docker-compose -f ./docker-compose.yml -f ./docker-compose-rabbitmq.yml -f ./docker-compose-postgres.yml up
@@ -21,7 +21,7 @@ The code is in Github. You can follow the steps below to run the POC locally. Sa
 ## HTTP Source application
 
 
-Clone this application from https://github.com/Haybu/reqresp-http-source-rabbit. Go to the project home directory, and do
+Clone this application from https://github.com/Haybu/reqres-http-source-rabbit. Go to the project home directory, and do
 
 $ mvn clean install
 $ java -jar ./target/reqres-http-source-rabbit-0.0.1-SNAPSHOT.jar
@@ -29,7 +29,7 @@ $ java -jar ./target/reqres-http-source-rabbit-0.0.1-SNAPSHOT.jar
 If you are running docker-compose with rabbit you can register the app in the following manner:
 
 ```bash
-dataflow:>app register --name http-reqres --type source --uri maven://com.agilehandy:reqresp-http-source-rabbit:0.0.1-SNAPSHOT
+dataflow:>app register --name http-reqres --type source --uri maven://com.agilehandy:reqres-http-source-rabbit:0.0.1-SNAPSHOT
 ```
 To enable this we use the local customization option we use the maven section for mounting volumes for the docker-compose configuration found at "Maven Local Repository Mounting" - https://dataflow.spring.io/docs/installation/local/docker-customize/. In addition, when using rabbit we expose the management port (15672) so that developers can have a view into the auto-created queues and monitor pipeline traffic. Add the following in the docker-compose-rabbitmq.yml.  Finally, we exec into the dataflow-rabbitmq container and enable the rabbitmq management plugin with the following.
 ```bash
