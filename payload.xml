@@ -6,9 +6,9 @@
       <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">Zsh7jQiXIMHM</wsse:Password>
       <wsse:Nonce EncodingType="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-soap-message-security-1.0#Base64Binary">Ib2ItPQx9GLDUdIWwhoeZw==</wsse:Nonce>
          <wsu:Created>2012-08-31T15:22:48.031Z</wsu:Created>
-     </wsse:UsernameToken>
+       </wsse:UsernameToken>
      </wsse:Security>
-     </soapenv:Header>
+ </soapenv:Header>
      <soapenv:Body>
        <eser:checkUserExists>
         <checkUserExistsRequest>

@@ -1,5 +1,8 @@
 -- create database reqres;
 
+drop table if exists  customers;
+drop table if exists config_properties;
+
 create table customers
 (
   returncode varchar(100), 
@@ -13,8 +16,8 @@ insert into customers values('success', '100', 'potential customer', '1', '000-0
 
 select * from customers;
 
-drop function f_checkuser;
-drop function xtable;
+drop function if exists f_checkuser;
+drop function if exists xtable;
 
 CREATE FUNCTION f_checkuser(p_customerId varchar, p_customerCode varchar) RETURNS INTEGER
 as 

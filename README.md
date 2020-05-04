@@ -10,6 +10,11 @@ using
 HOST_MOUNT_PATH=~/.m2/repository/ DOCKER_MOUNT_PATH=/root/.m2/repository DATAFLOW_VERSION=2.4.2.RELEASE SKIPPER_VERSION=2.3.2.RELEASE docker-compose -f ./docker-compose.yml -f ./docker-compose-rabbitmq.yml -f ./docker-compose-postgres.yml up
 ```
 
+In a secoond terminal you can execute the following command to run the command shell:
+```bash
+docker exec -it dataflow-server java -jar shell.jar
+```
+
 One of the options we discussed, as the main theme in existing use cases of IBM data-power services involve patterns of integration and transformation tasks, we can leverage Spring Cloud Stream technique to perform typical tasks. Spring Cloud Stream provides a light-weight programming model to construct a stream of messages that is composed of a starting source, through one or more processors and a final sink. Each of the source, processor and sink parts are essentially a simple Spring Boot-based application with a qualifying binding annotation and few properties. Furthermore, with the Spring Cloud Data Flow and Spring Cloud Skipper it would be super-easy to orchestrate and manage the creation, deployment, scaling and versioning of the streams and their applications.
 
 Our brainstormed idea is to use a request / response model of a stream that starts with an HTTP source and goes through one/more processor(s). No sink stream application is needed, but rather the final message returns back as a response. An integration gateway adapter is used in the HTTP source application to model a request/response pattern. The picture above is worth a 1000 word to illustrate the stream.
@@ -52,13 +57,7 @@ $ java -jar ./groovy-transform-processor-rabbit-2.0.1.RELEASE.jar \
 Note: You need to copy the groovy script to the root directory in the following manner:
 
 ```bash
-docker cp xml-request-transform.groovy dataflow-server:/root
-```
-I've needed a workaround for the artifacts as they evidently were not copied to the springRepo.  Do the following:
-
-```bash
-docker cp <project-location>reqres-http-source-rabbit/target/reqres-http-source-rabbit-0.0.1-SNAPSHOT.jar dataflow-server:/root
-docker cp <project-location>reqres-jdbc-processor-rabbit/target/reqres-jdbc-processor-rabbit-0.0.1-SNAPSHOT.jar  dataflow-server:/root 
+docker cp xml-request-transform.groovy skipper:/root
 ```
 
 Now we add the groovy-transform-processor to our pipeline with the following syntax:
