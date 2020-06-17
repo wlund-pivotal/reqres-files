@@ -7,7 +7,7 @@ There are times when an asynchronous data pipeline needs to act as if its synchr
 There are two ways to work with SCDF in local mode; 1) launch the app-starters as individual spring boot apps, which requires manually launching the message bus like RabbitMQ in these examples or 2) run a local scdf docker-compose.yml env. We will focus on the latter because we believe its simpler and its well documented in the SCDF docs. For that see [Local Machine: Docker Compose](https://dataflow.spring.io/docs/installation/local/docker/) for details on starting scdf with docker-compose. For this example we've been
 using
 ```bash
-HOST_MOUNT_PATH=~/.m2/repository/ DOCKER_MOUNT_PATH=/root/.m2/repository DATAFLOW_VERSION=2.4.2.RELEASE SKIPPER_VERSION=2.3.2.RELEASE docker-compose -f ./docker-compose.yml -f ./docker-compose-rabbitmq.yml -f ./docker-compose-postgres.yml up
+HOST_MOUNT_PATH=~/.m2/repository/ DOCKER_MOUNT_PATH=/root/.m2/repository DATAFLOW_VERSION=2.5.1.RELEASE SKIfPPER_VERSION=2.4.1.RELEASE docker-compose -f ./docker-compose.yml -f ./docker-compose-rabbitmq.yml -f ./docker-compose-postgres.yml up
 ```
 
 In a secoond terminal you can execute the following command to run the command shell:
